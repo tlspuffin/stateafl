@@ -9610,36 +9610,6 @@ static void check_crash_handling(void) {
 
 static void check_aslr(void) {
 
-#ifdef __linux__
-
-  /* This is Linux specific */
-
-  s32 fd = open("/proc/sys/kernel/randomize_va_space", O_RDONLY);
-  u8  fchar;
-
-  if (fd < 0) return;
-
-  ACTF("Checking ASLR...");
-
-  if (read(fd, &fchar, 1) == 1 && fchar != '0') {
-
-    SAYF("\n" cLRD "[-] " cRST
-         "Beware, ASLR (Address Space Layout Randomization) is enabled on your system.\n"
-         "    This can cause non-deterministic variations at run-time (e.g., pointers)\n"
-         "    that can affect state analysis.\n\n"
-
-         "    To disable ASLR, please log in as root\n"
-         "    and temporarily modify /proc/sys/kernel/randomize_va_space, like so:\n\n"
-
-         "    echo 0 | sudo tee /proc/sys/kernel/randomize_va_space\n");
-
-    FATAL("ASLR detected");
-  }
-
-  close(fd);
-
-#endif
-
 }
 
 
